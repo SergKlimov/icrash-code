@@ -23,7 +23,4 @@ public enum EtMediaCategory implements JIntIs{
 		return new PtString("Expected structure of the alert status is to be one of the following:\n" +
 				 EtMediaCategory.category_1.name() + "\n" +  EtMediaCategory.category_2.name() + "\n" +  EtMediaCategory.category_3.name());
 	}
-	
-	
-	
 }

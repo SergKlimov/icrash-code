@@ -9,7 +9,6 @@ public class DtMediaID extends DtString implements JIntIs {
 	
 	private static final long serialVersionUID = -4948442193286092846L;
 
-
 	/**
 	 * Instantiates a new datatype of the media id.
 	 *
