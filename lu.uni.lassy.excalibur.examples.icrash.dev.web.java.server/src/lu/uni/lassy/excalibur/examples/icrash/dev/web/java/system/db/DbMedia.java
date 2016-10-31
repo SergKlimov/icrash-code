@@ -5,6 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import lu.uni.lassy.excalibur.examples.icrash.dev.web.java.system.types.primary.CtMedia;
 import lu.uni.lassy.excalibur.examples.icrash.dev.web.java.system.types.primary.DtEmail;
@@ -123,6 +126,43 @@ public class DbMedia extends DbAbstract {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	static public void updateMedia(CtMedia aCtMedia){
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			
+			conn = DriverManager.getConnection(url + dbName, userName, password);
+			log.debug("Connected to the database");
+
+			try {
+				log.debug("[DATABASE]-Update media");
+				String sql = "UPDATE " + dbName + ".media SET `name` = ?, `email` = ?, `category` = ? WHERE id = ?";
+				
+				String id = aCtMedia.id.value.getValue();
+				String name = aCtMedia.name.value.getValue();
+				String email = aCtMedia.email.value.getValue();
+				String category = aCtMedia.category.toString();
+				
+				PreparedStatement statement = conn.prepareStatement(sql);
+				statement.setString(1, name);
+				statement.setString(2, email);
+				statement.setString(3, category);
+				statement.setString(4, id);
+				
+				int rows = statement.executeUpdate();
+				log.debug(rows + " row affected");
+			} catch (SQLException s) {
+				log.error("SQL statement is not executed! " + s);
+			}
+
+			conn.close();
+			log.debug("Disconnected from database");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 }
