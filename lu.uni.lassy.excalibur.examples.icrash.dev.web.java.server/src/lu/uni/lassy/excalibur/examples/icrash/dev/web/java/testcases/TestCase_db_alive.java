@@ -20,6 +20,13 @@ import java.sql.Statement;
 import org.apache.log4j.Logger;
 
 import lu.uni.lassy.excalibur.examples.icrash.dev.web.java.system.db.DbAbstract;
+import lu.uni.lassy.excalibur.examples.icrash.dev.web.java.system.db.DbMedia;
+import lu.uni.lassy.excalibur.examples.icrash.dev.web.java.system.types.primary.CtMedia;
+import lu.uni.lassy.excalibur.examples.icrash.dev.web.java.system.types.primary.DtEmail;
+import lu.uni.lassy.excalibur.examples.icrash.dev.web.java.system.types.primary.DtMediaID;
+import lu.uni.lassy.excalibur.examples.icrash.dev.web.java.system.types.primary.DtMediaName;
+import lu.uni.lassy.excalibur.examples.icrash.dev.web.java.system.types.primary.EtMediaCategory;
+import lu.uni.lassy.excalibur.examples.icrash.dev.web.java.types.stdlib.PtString;
 import lu.uni.lassy.excalibur.examples.icrash.dev.web.java.utils.Log4JUtils;
 
 public class TestCase_db_alive extends DbAbstract {
@@ -58,57 +65,33 @@ public class TestCase_db_alive extends DbAbstract {
 			
 			
 			/********************/
-			
 			log.info("----Media-INSERT------");
-			try{
-				Statement st = conn.createStatement();
-				int val = st.executeUpdate("INSERT "+ dbName+ ".media VALUES('1', 'Media_1', 'email_1', 'category_1')");
-				val += st.executeUpdate("INSERT "+ dbName+ ".media VALUES('2', 'Media_2', 'email_2', 'category_2')");
-				val += st.executeUpdate("INSERT "+ dbName+ ".media VALUES('3', 'Media_3', 'email_3', 'category_3')");
-				log.debug(val + " row(s) affected");
-			}
-			catch (SQLException s){
-				log.error("SQL statement is not executed " + s);
-			}
 			
-			log.info("----Media-DELETE------");
-			try{
-				String sql = "DELETE FROM media WHERE id = ?";
-				String id = "1";
-
-				PreparedStatement statement = conn.prepareStatement(sql);
-	            statement.setString(1, id);
-	            
-	            int rows = statement.executeUpdate();
-				log.debug(rows +" row(s) affected");
-
-				statement.setString(1, "3");
-				rows = statement.executeUpdate();
-				log.debug(rows +" row(s) affected");
-			}
-			catch (SQLException s){
-				log.error("SQL statement is not executed " + s);
-			}
+			CtMedia media = new CtMedia();
+			media.init(new DtMediaID(new PtString("4")),
+					new DtMediaName(new PtString("Media_4")),
+					new DtEmail(new PtString("email_4")),
+					EtMediaCategory.category_1);
+			
+			DbMedia.insertMedia(media);			
+			
+			log.info("----Media-UPDATE------");
+			media.init(new DtMediaID(new PtString("4")),
+					new DtMediaName(new PtString("Media_4")),
+					new DtEmail(new PtString("email_4")),
+					EtMediaCategory.category_2);			
+			
+			DbMedia.updateMedia(media);
 			
 			log.info("----Media-SELECT------");
-			try{
-				Statement st = conn.createStatement();
-				ResultSet res = st.executeQuery("SELECT * FROM  "+ dbName+ ".media");
-				log.info("Media's ID" + "\t" + "Media's Name" + "\t" + "Media's Email" + "\t" + "Media's category");
-
-				while (res.next()) {
-					String id = res.getString("id");
-					String name = res.getString("name");
-					String email = res.getString("email");
-					String category = res.getString("category");
-					
-					log.info(id + "\t" + name + "\t" + email + "\t" + category);
-				}
-			}
-			catch (SQLException s){
-				log.error("SQL statement is not executed " + s);
-			}
-
+			
+			media = DbMedia.getMedia("4");
+			log.info(media.id.value.getValue() + "\t" + media.name.value.getValue() + "\t" + media.email.value.getValue() + "\t" + media.category.toString());
+						
+			log.info("----Media-DELETE------");
+			
+			DbMedia.deleteMedia(media);
+			
 			/********************/
 			
 			
