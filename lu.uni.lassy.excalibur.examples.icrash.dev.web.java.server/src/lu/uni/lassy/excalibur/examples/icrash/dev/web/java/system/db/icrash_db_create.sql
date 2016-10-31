@@ -194,7 +194,7 @@ CREATE TABLE `media` (
  `id` varchar(80) NOT NULL,
  `name` varchar(80) DEFAULT NULL,
   `email` varchar(80) DEFAULT NULL,
-  `category` int DEFAULT NULL,
+  `category` varchar(80) DEFAULT NULL,
  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;

@@ -55,6 +55,63 @@ public class TestCase_db_alive extends DbAbstract {
 
 
 			/********************/
+			
+			
+			/********************/
+			
+			log.info("----Media-INSERT------");
+			try{
+				Statement st = conn.createStatement();
+				int val = st.executeUpdate("INSERT "+ dbName+ ".media VALUES('1', 'Media_1', 'email_1', 'category_1')");
+				val += st.executeUpdate("INSERT "+ dbName+ ".media VALUES('2', 'Media_2', 'email_2', 'category_2')");
+				val += st.executeUpdate("INSERT "+ dbName+ ".media VALUES('3', 'Media_3', 'email_3', 'category_3')");
+				log.debug(val + " row(s) affected");
+			}
+			catch (SQLException s){
+				log.error("SQL statement is not executed " + s);
+			}
+			
+			log.info("----Media-DELETE------");
+			try{
+				String sql = "DELETE FROM media WHERE id = ?";
+				String id = "1";
+
+				PreparedStatement statement = conn.prepareStatement(sql);
+	            statement.setString(1, id);
+	            
+	            int rows = statement.executeUpdate();
+				log.debug(rows +" row(s) affected");
+
+				statement.setString(1, "3");
+				rows = statement.executeUpdate();
+				log.debug(rows +" row(s) affected");
+			}
+			catch (SQLException s){
+				log.error("SQL statement is not executed " + s);
+			}
+			
+			log.info("----Media-SELECT------");
+			try{
+				Statement st = conn.createStatement();
+				ResultSet res = st.executeQuery("SELECT * FROM  "+ dbName+ ".media");
+				log.info("Media's ID" + "\t" + "Media's Name" + "\t" + "Media's Email" + "\t" + "Media's category");
+
+				while (res.next()) {
+					String id = res.getString("id");
+					String name = res.getString("name");
+					String email = res.getString("email");
+					String category = res.getString("category");
+					
+					log.info(id + "\t" + name + "\t" + email + "\t" + category);
+				}
+			}
+			catch (SQLException s){
+				log.error("SQL statement is not executed " + s);
+			}
+
+			/********************/
+			
+			
 			//Select
 			/*log.info("----Step 3-SELECT------");
 			try{
