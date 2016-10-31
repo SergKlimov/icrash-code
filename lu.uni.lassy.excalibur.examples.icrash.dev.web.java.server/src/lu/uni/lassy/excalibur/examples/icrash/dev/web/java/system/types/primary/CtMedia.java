@@ -18,11 +18,11 @@ public class CtMedia implements Serializable{
 	
 	public DtEmail email;
 	
-	public PtBoolean init(DtMediaID id, EtMediaCategory category, DtMediaName name, DtEmail email){
+	public PtBoolean init(DtMediaID id, DtMediaName name, DtEmail email, EtMediaCategory category){
 		this.id = id;
-		this.category = category;
 		this.name = name;
 		this.email = email;
+		this.category = category;
 		
 		return new PtBoolean(true);
 	}
